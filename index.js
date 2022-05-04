@@ -10,9 +10,12 @@ const app = http.createServer((request, response) => {
 
 const { request, response } = require("express");
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 const logger = require("./loggerMiddleware");
 
+app.use(cors());
 app.use(express.json());
 
 app.use(logger);
