@@ -51,13 +51,23 @@ app.get('/api/notes', (request, response) =>{
 app.get('/api/notes/:id', (request, response) =>{
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
-
+  
   if(note){
     response.json(note)
   }else {
     response.status(404).end()
   }
 })
+
+//Eliminar objeto por su id
+app.delete('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  notes = notes.filter(note => note.id === id)
+  // Estado de nada en el array
+  response.status(204).end()
+})
+
+
 //iniciando servidor en el puerto 3001
 const PORT = 3001
 app.listen(PORT, () => {
