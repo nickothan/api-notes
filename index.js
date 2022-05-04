@@ -8,7 +8,7 @@ const app = http.createServer((request, response) => {
   response.end(JSON.stringify(notes))
 }) */
 
-const { request } = require("express")
+const { request, response } = require("express")
 const express = require("express")
 const app = express()
 
@@ -41,7 +41,23 @@ app.get('/', (request, response) => {
 app.get('/api/notes', (request, response) =>{
   response.json(notes)
 })
+/*  maneras de usar app
+.get
+.post
+.del
+.put */
 
+// Recuperar objeto por su id
+app.get('/api/notes/:id', (request, response) =>{
+  const id = Number(request.params.id)
+  const note = notes.find(note => note.id === id)
+
+  if(note){
+    response.json(note)
+  }else {
+    response.status(404).end()
+  }
+})
 //iniciando servidor en el puerto 3001
 const PORT = 3001
 app.listen(PORT, () => {
