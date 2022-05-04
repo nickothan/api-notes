@@ -12,6 +12,8 @@ const { request, response } = require("express")
 const express = require("express")
 const app = express()
 
+app.use(express.json())
+
 let notes = [
   {
     "id": 1,
@@ -65,6 +67,35 @@ app.delete('/api/notes/:id', (request, response) => {
   notes = notes.filter(note => note.id === id)
   // Estado de nada en el array
   response.status(204).end()
+})
+
+// Crear nota
+app.post("/api/notes", (request, response) => {
+  const note = request.body
+
+  if(!note || !note.content){
+    return response.status(404).json({
+      error: 'note.content is missing'
+    })
+  }
+
+  //buscar id mas alto
+  const ids = notes.map(note => note.id)
+  const maxId = Math.max(...ids)
+
+  // Creando el objeto
+  const newNote = {
+    id: maxId + 1,
+    content : note.content,
+    importnant : typeof note.importnant === "undefined" ? note.importnant : false,
+    date: new Date().toISOString()
+  }
+
+  //Agregando el objeto en la ultima posicion
+  //notes = notes.concat(newNote)
+  notes = [...notes, newNote]
+
+  response.status(201).json(newNote)
 })
 
 
