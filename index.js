@@ -1,5 +1,16 @@
-//importando con common js
+/* //importando con common js
 const http = require("http")
+//creando servidor
+const app = http.createServer((request, response) => {
+  //pasamos un callback
+  response.writeHead(200, {"Content-Type" : "application/json"})
+  //Exportamos el array de notes 
+  response.end(JSON.stringify(notes))
+}) */
+
+const { request } = require("express")
+const express = require("express")
+const app = express()
 
 let notes = [
   {
@@ -22,16 +33,17 @@ let notes = [
   },
 ]
 
-//creando servidor
-const app = http.createServer((request, response) => {
-  //pasamos un callback
-  response.writeHead(200, {"Content-Type" : "application/json"})
-  //Exportamos el array de notes 
-  response.end(JSON.stringify(notes))
+// Peticion get
+app.get('/', (request, response) => {
+  response.send('<h1>Hello word</h1>')
+})
+
+app.get('/api/notes', (request, response) =>{
+  response.json(notes)
 })
 
 //iniciando servidor en el puerto 3001
 const PORT = 3001
-app.listen(PORT)
-
-console.log(`Server running on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`)
+})
